@@ -7,6 +7,7 @@
     "cogo-toast": "^3.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-grid-gallery": "^0.5.5",
     "react-scripts": "3.0.1",
     "react-strap": "0.0.1",
     "react-toastify": "^4.4.2",
