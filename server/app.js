@@ -26,12 +26,16 @@ async function listFiles(bucketName) {
   const {Storage} = require('@google-cloud/storage');
   const storage = new Storage();
   const [files] = await storage.bucket(bucketName).getFiles();
-  let names = [];
+  let images = [];
   files.forEach(file => {
-    names.push(file.metadata.mediaLink);
+    let image = {
+      src: file.metadata.mediaLink,
+      thumbnail: file.metadata.mediaLink
+    }
+    images.push(image);
   });
 
-  return names;
+  return images;
 }
 
 

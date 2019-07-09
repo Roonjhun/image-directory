@@ -2,30 +2,35 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import cogoToast from 'cogo-toast';
 import 'react-toastify/dist/ReactToastify.css';
+import Gallery from 'react-grid-gallery';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 
 const API = 'https://image-directory.appspot.com/images';
+// const API = 'http://localhost:4000/images';
+
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      loaded: 0,
+      loading: false,
       images: [],
     }
 
   }
 
   componentDidMount() {
+    this.setState({});
     this.getImages()
   }
 
 
   getImages() {
-    fetch(API)
-      .then(response => response.json())
-      .then(files => this.setState({ images: files }));
+    this.setState({ loading: true})
+    axios.get(API)
+      .then(response => this.setState({ images: response.data, loading: false }));
   }
 
   onChangeHandler = event => {
@@ -37,23 +42,20 @@ export default class App extends Component {
   }
 
   onClickHandler = () => {
+    if (!this.state.selectedFile) {
+      return
+    }
     console.log(this.state)
     const data = new FormData()
 
     data.append('photo', this.state.selectedFile)
-    axios.post("http://localhost:4000/images", data, {
-      onUploadProgress: ProgressEvent => {
-        this.setState({
-          loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
-        })
-      },
-    })
-      .then(res => { // then print response status
+    axios.post(API, data)
+      .then(res => {
         console.log(res)
         cogoToast.success('Uploaded successfully');
         this.getImages()
       })
-      .catch(err => { // then print response status
+      .catch(err => {
         cogoToast.error('upload fail', err)
       })
   }
@@ -61,29 +63,26 @@ export default class App extends Component {
   render() {
     return (
       <div className="container">
-        <div className="row">
-          <div className="offset-md-3 col-md-6">
-            <div className="form-group files">
-              <label>Upload Your File </label>
-              <input type="file" className="form-control" onChange={this.onChangeHandler} />
-            </div>
+        <center>
 
-            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
-
+          <BeatLoader
+            size={18}
+            color={'rgb(54, 215, 183)'}
+            loading={this.state.loading}
+          />
+          
+          <div>
+            <input type="file" onChange={this.onChangeHandler} />
+            { !this.state.loading && 
+            <button type="button" onClick={this.onClickHandler}>Upload</button>
+            
+        }
           </div>
-        </div>
 
+        </center>
 
-        <div>
-          {this.state.images.map(image => (
-            <img
-              style={{ width: 200 }}
-              key={image}
-              src={`${image}`}
-              alt={image}
-            />
-          ))}
-        </div>
+        <br />
+        <Gallery images={this.state.images} />
 
 
       </div>

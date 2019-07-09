@@ -9,6 +9,7 @@
     "react-dom": "^16.8.6",
     "react-grid-gallery": "^0.5.5",
     "react-scripts": "3.0.1",
+    "react-spinners": "^0.5.8",
     "react-strap": "0.0.1",
     "react-toastify": "^4.4.2",
     "reactstrap": "^6.5.0"
