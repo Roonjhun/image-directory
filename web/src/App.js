@@ -28,7 +28,7 @@ export default class App extends Component {
 
 
   getImages() {
-    this.setState({ loading: true})
+    this.setState({ loading: true })
     axios.get(API)
       .then(response => this.setState({ images: response.data, loading: false }));
   }
@@ -63,6 +63,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="container">
+        <br /><br />
         <center>
 
           <BeatLoader
@@ -70,15 +71,16 @@ export default class App extends Component {
             color={'rgb(54, 215, 183)'}
             loading={this.state.loading}
           />
-          
-          <div>
-            <input type="file" onChange={this.onChangeHandler} />
-            { !this.state.loading && 
-            <button type="button" onClick={this.onClickHandler}>Upload</button>
-            
-        }
-          </div>
 
+          {!this.state.loading &&
+            <div>
+              <input type="file" onChange={this.onChangeHandler} />
+
+              <button type="button" onClick={this.onClickHandler}>Upload</button>
+
+            </div>
+
+          }
         </center>
 
         <br />
