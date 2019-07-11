@@ -22,7 +22,6 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({});
     this.getImages()
   }
 
@@ -36,8 +35,7 @@ export default class App extends Component {
   onChangeHandler = event => {
     let file = event.target.files[0]
     this.setState({
-      selectedFile: file,
-      loaded: 0
+      selectedFile: file
     })
   }
 
@@ -65,6 +63,7 @@ export default class App extends Component {
       <div className="container">
         <br /><br />
         <center>
+          Demo
 
           <BeatLoader
             size={18}
