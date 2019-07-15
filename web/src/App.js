@@ -50,7 +50,7 @@ export default class App extends Component {
     axios.post(API, data)
       .then(res => {
         console.log(res)
-        cogoToast.success('Uploaded successfully');
+        cogoToast.success('Uploaded successfully', { position: 'bottom-center' });
         this.getImages()
       })
       .catch(err => {
@@ -63,7 +63,7 @@ export default class App extends Component {
       <div className="container">
         <br /><br />
         <center>
-          Demo
+          
 
           <BeatLoader
             size={18}
