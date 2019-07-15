@@ -10,7 +10,7 @@ const multer = require('multer');
 const m = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024 // no larger than 5mb
+    fileSize: 5 * 1024 * 1024 // not larger than 5mb
   }
 });
 
@@ -49,18 +49,13 @@ app.get('/images', function (req, res){
 })
 
 
-// Process the file upload and upload to Google Cloud Storage.
 app.post("/images", m.single("photo"), (req, res, next) => {
   if (!req.file) {
     res.status(400).send("No file uploaded.");
     return;
   }
 
-  // Create a new blob in the bucket and upload the file data.
   const blob = bucket.file(req.file.originalname);
-
-  // Make sure to set the contentType metadata for the browser to be able
-  // to render the image instead of downloading the file (default behavior)
   const blobStream = blob.createWriteStream({
     metadata: {
       contentType: req.file.mimetype
@@ -74,10 +69,6 @@ app.post("/images", m.single("photo"), (req, res, next) => {
 
   blobStream.on("finish", () => {
     res.status(200).send(`successful`);
-    // res.writeHead(301,
-    //   {Location: 'http://localhost:3000/'}
-    // );
-    // res.end();
   });
 
   blobStream.end(req.file.buffer);
@@ -85,10 +76,8 @@ app.post("/images", m.single("photo"), (req, res, next) => {
 
 
 
-// Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
 });
-// [END gae_node_request_example]
